@@ -2,6 +2,10 @@ package assignment2;
 
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -24,7 +28,7 @@ public class Assignment2 {
 
     }
     
-    public void printMenu(){
+public void printMenu(){
         System.out.println("\n1) Add new word. ");
         System.out.println("2) Delete word. ");
         System.out.println("3) Get meaning. ");
@@ -33,7 +37,7 @@ public class Assignment2 {
         System.out.println("6) Exit. ");
     }
     
-    public void runMenu(){
+public void runMenu(){
         while(!exit){
             printMenu();
             int option = getInput();
@@ -41,7 +45,7 @@ public class Assignment2 {
         }
     }
 
-    private int getInput(){
+private int getInput(){
         Scanner sc = new Scanner(System.in);
         int option = -1;
         while(option < 1 || option > 6){
@@ -56,7 +60,6 @@ public class Assignment2 {
         return option;
     }
     
-    
  private void addNewWord(){
         try{
             FileWriter fw = new FileWriter("wordList.txt", true);
@@ -66,7 +69,7 @@ public class Assignment2 {
             System.out.println("Enter a word: ");
             String word = sc.nextLine();
             
-            pw.print("\n" + word);
+            pw.print("\n" + word.toLowerCase());
             pw.close();
         }
         catch(IOException e){
@@ -99,12 +102,28 @@ public class Assignment2 {
 
     }
  
-private void menuAction(int option){
+private void dictionaryList(){
+    try{
+        FileInputStream fileStream = new FileInputStream("wordList.txt");
+        DataInputStream din = new DataInputStream(fileStream);
+        BufferedReader br = new BufferedReader(new InputStreamReader(din));
+        String strLine;
+        while((strLine = br.readLine()) != null){
+            System.out.println(strLine);
+        }
+        din.close();
+    }
+    catch(Exception e){
+        System.err.println("Error: " + e.getMessage());
+    }
+}
+ 
+private void menuAction(int option) {
         switch(option){
             case 1 -> addNewWord();
             case 2 -> System.out.println("Delete word.");
             case 3 -> System.out.println("Get meaning");
-            case 4 -> System.out.println("Dictionary list");
+            case 4 -> dictionaryList();
             case 5 -> spellCheck();
             case 6 -> {
                 exit = true;
